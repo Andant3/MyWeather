@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     id("kotlin-kapt")
+    id("com.google.dagger.hilt.android")
 }
 
 android {
@@ -76,4 +77,17 @@ dependencies {
     // Retrofit
     implementation(libs.retrofit)
     implementation (libs.gson)
+    implementation(libs.converter.gson)
+
+    // Dependency Injection
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.android.compiler)
+
+
+    // DateTime
+    implementation(libs.kotlinx.datetime)
+}
+
+kapt {
+    correctErrorTypes = true
 }
