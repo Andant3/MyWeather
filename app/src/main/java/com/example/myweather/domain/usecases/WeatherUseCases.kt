@@ -1,6 +1,7 @@
 package com.example.myweather.domain.usecases
 
 data class WeatherUseCases(
-    val getWeatherFromApi: GetWeatherFromApi
+    val getWeatherFromApi: GetWeatherFromApi,
+    val getUsersLocation: GetUsersLocation
 ) {
 }

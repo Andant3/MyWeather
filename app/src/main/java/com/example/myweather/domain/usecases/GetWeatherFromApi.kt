@@ -1,11 +1,11 @@
 package com.example.myweather.domain.usecases
 
 import com.example.myweather.domain.model.WeatherResponse
-import com.example.myweather.domain.repository.Repository
+import com.example.myweather.domain.repository.WeatherRepository
 
-class GetWeatherFromApi(private val repository: Repository) {
+class GetWeatherFromApi(private val repository: WeatherRepository) {
 
-    suspend fun invoke(lat: Double, long: Double): WeatherResponse {
-        return repository.getWeatherDataFromApi(lat, long)
+    suspend fun invoke(latitude: Double, longitude: Double): WeatherResponse {
+        return repository.getWeatherDataFromApi(latitude, longitude)
     }
 }
