@@ -11,6 +11,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+
 @HiltViewModel
 class WeatherViewModel @Inject constructor(
     private val weatherUseCases: WeatherUseCases
@@ -19,19 +20,33 @@ class WeatherViewModel @Inject constructor(
     private val _state = mutableStateOf(WeatherState())
     val state: State<WeatherState> = _state
 
-    init {
-        try {
-            viewModelScope.launch {
+
+    fun getWeatherInfo() {
+        viewModelScope.launch {
+            try {
                 val usersLocation = weatherUseCases.getUsersLocation.invoke()
                 val weatherResponse = weatherUseCases
                     .getWeatherFromApi.invoke(
                         latitude = usersLocation.latitude,
                         longitude = usersLocation.longitude
                     )
+
+                Log.i(
+                    "TAGY", "Location is successfully loaded" +
+                            "\nlatitude = ${usersLocation.latitude}" +
+                            "\nlongitude = ${usersLocation.longitude}"
+                )
+
+                val city = weatherUseCases.getCityByLocation.invoke(
+                    usersLocation.latitude,
+                    usersLocation.longitude
+                )
                 val hourlyWeather = weatherResponse.hourly
                 val dailyWeather = weatherResponse.daily
 
                 _state.value = state.value.copy(
+                    isLoading = false,
+                    city = city,
                     hourlyTime = hourlyWeather.time,
                     hourly2MTemperatureList = hourlyWeather.temperature2M,
                     hourlyMaxWindSpeedList = hourlyWeather.windSpeedMax,
@@ -41,14 +56,13 @@ class WeatherViewModel @Inject constructor(
                     dailyMaxWindSpeedList = dailyWeather.windSpeedMax,
                     dailyWeatherCodes = dailyWeather.weatherCodes
                 )
-                Log.i("TAGY", "Location and Weather are successfully loaded")
+                Log.i("TAGY", "Weather is successfully loaded")
+            } catch (e: Exception) {
+                Log.i(
+                    "TAGY", "Something went wrong " +
+                            "while processing api call\n${e.message}"
+                )
             }
-        } catch (e: Exception) {
-            Log.i(
-                "TAGY", "Something went wrong " +
-                        "while processing api call\n${e.message}"
-            )
         }
-
     }
 }

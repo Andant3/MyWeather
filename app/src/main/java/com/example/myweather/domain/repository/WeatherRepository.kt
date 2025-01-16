@@ -9,4 +9,6 @@ interface WeatherRepository {
     suspend fun getWeatherDataFromApi(lat: Double, long: Double): WeatherResponse
 
     suspend fun getUsersLocation(): UserLocation
+
+    suspend fun getCityByLocation(lat: Double, long: Double): String
 }

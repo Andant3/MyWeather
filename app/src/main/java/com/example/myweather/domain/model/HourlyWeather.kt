@@ -1,7 +1,6 @@
 package com.example.myweather.domain.model
 
 import com.google.gson.annotations.SerializedName
-import kotlinx.datetime.LocalDate
 
 data class HourlyWeather(
     val time: List<String>,

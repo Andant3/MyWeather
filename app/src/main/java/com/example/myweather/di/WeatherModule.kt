@@ -3,6 +3,7 @@ package com.example.myweather.di
 import android.content.Context
 import com.example.myweather.data.repository.WeatherRepositoryImpl
 import com.example.myweather.domain.repository.WeatherRepository
+import com.example.myweather.domain.usecases.GetCityByLocation
 import com.example.myweather.domain.usecases.GetUsersLocation
 import com.example.myweather.domain.usecases.GetWeatherFromApi
 import com.example.myweather.domain.usecases.WeatherUseCases
@@ -28,7 +29,8 @@ object WeatherModule {
     fun provideWeatherUseCases(repository: WeatherRepository): WeatherUseCases{
         return WeatherUseCases(
             getWeatherFromApi = GetWeatherFromApi(repository),
-            getUsersLocation = GetUsersLocation(repository)
+            getUsersLocation = GetUsersLocation(repository),
+            getCityByLocation = GetCityByLocation(repository)
         )
     }
 }

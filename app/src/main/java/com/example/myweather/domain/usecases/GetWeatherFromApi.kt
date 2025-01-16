@@ -5,7 +5,7 @@ import com.example.myweather.domain.repository.WeatherRepository
 
 class GetWeatherFromApi(private val repository: WeatherRepository) {
 
-    suspend fun invoke(latitude: Double, longitude: Double): WeatherResponse {
+    suspend operator fun invoke(latitude: Double, longitude: Double): WeatherResponse {
         return repository.getWeatherDataFromApi(latitude, longitude)
     }
 }

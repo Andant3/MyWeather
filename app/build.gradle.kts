@@ -97,6 +97,9 @@ dependencies {
 
     // DateTime
     implementation(libs.kotlinx.datetime)
+
+    // Permissions
+    implementation (libs.accompanist.permissions)
 }
 
 kapt {
