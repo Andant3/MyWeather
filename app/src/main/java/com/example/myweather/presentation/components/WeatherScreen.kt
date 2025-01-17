@@ -110,7 +110,7 @@ fun WeatherScreen(viewModel: WeatherViewModel = hiltViewModel()) {
                     ) {
                         WeatherText(
                             modifier = Modifier.padding(top = 16.dp),
-                            weatherCode = weather.hourlyWeatherCodes[0],
+                            weatherCode = weather.hourlyWeatherCodes[currentTime],
                             textColor = textColor,
                             fontSize = 22.sp
                         )
