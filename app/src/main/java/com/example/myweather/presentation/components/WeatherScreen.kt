@@ -170,6 +170,7 @@ fun WeatherScreen(viewModel: WeatherViewModel = hiltViewModel()) {
                     backgroundColor = getSecondaryBackgroundColor(backgroundColor),
                     currentDay = currentDay
                 )
+                Spacer(Modifier.height(30.dp))
             }
         }
         else{
@@ -185,7 +186,6 @@ fun WeatherScreen(viewModel: WeatherViewModel = hiltViewModel()) {
                 )
             }
         }
-
     } else {
         Column(
             Modifier

@@ -5,6 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import com.example.myweather.R
+import com.example.myweather.domain.model.WeatherCode
 
 @Composable
 fun WeatherImage(
@@ -17,7 +18,7 @@ fun WeatherImage(
         modifier = modifier,
         painter = painterResource(
             when (weatherCode) {
-                0 -> {
+                WeatherCode.CLEAR -> {
                     if (time > 18) {
                         R.drawable.night_clear
                     } else {
@@ -25,7 +26,8 @@ fun WeatherImage(
                     }
                 }
 
-                1, 2 -> {
+                WeatherCode.MAINLY_CLEAR,
+                WeatherCode.PARTLY_CLOUDY-> {
                     if (time > 18) {
                         R.drawable.night_pt_cloudy
                     } else {
@@ -33,27 +35,49 @@ fun WeatherImage(
                     }
                 }
 
-                3 -> {
+                WeatherCode.OVERCAST -> {
                     R.drawable.cloudy
                 }
 
-                45, 48 -> {
+                WeatherCode.FOG,
+                WeatherCode.DEPOSITING_RIME_FOG -> {
                     R.drawable.fog
                 }
 
-                61, 63 -> {
-                    R.drawable.rain
-                }
-
-                65, 66, 67, 80, 81, 82 -> {
+                WeatherCode.LIGHT_DRIZZLE,
+                WeatherCode.MODERATE_DRIZZLE,
+                WeatherCode.DENSE_DRIZZLE,
+                WeatherCode.LIGHT_FREEZING_DRIZZLE,
+                WeatherCode.DENSE_FREEZING_DRIZZLE->{
                     R.drawable.rain_wind
                 }
 
-                71, 73, 75, 77, 85, 86 -> {
+                WeatherCode.SLIGHT_RAIN,
+                WeatherCode.MODERATE_RAIN -> {
+                    R.drawable.rain
+                }
+
+                WeatherCode.HEAVY_RAIN,
+                WeatherCode.LIGHT_FREEZING_RAIN,
+                WeatherCode.HEAVY_FREEZING_RAIN,
+                WeatherCode.SLIGHT_RAIN_SHOWERS,
+                WeatherCode.MODERATE_RAIN_SHOWERS,
+                WeatherCode.VIOLENT_RAIN_SHOWERS -> {
+                    R.drawable.rain_wind
+                }
+
+                WeatherCode.SLIGHT_SNOW_FALL,
+                WeatherCode.MODERATE_SNOW_FALL,
+                WeatherCode.HEAVY_SNOW_FALL,
+                WeatherCode.SNOW_GRAINS,
+                WeatherCode.SLIGHT_SNOW_SHOWERS,
+                WeatherCode.HEAVY_SNOW_SHOWERS -> {
                     R.drawable.snow
                 }
 
-                95, 96, 99 -> {
+                WeatherCode.MODERATE_THUNDERSTORM,
+                WeatherCode.SLIGHT_HAIL_THUNDERSTORM,
+                WeatherCode.HEAVY_HAIL_THUNDERSTORM -> {
                     R.drawable.thunderstorm
                 }
 
