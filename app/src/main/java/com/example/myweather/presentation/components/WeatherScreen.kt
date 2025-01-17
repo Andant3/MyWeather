@@ -29,8 +29,11 @@ import com.example.myweather.domain.model.HourlyWeather
 import com.example.myweather.domain.model.WeatherCode
 import com.example.myweather.presentation.viewmodel.WeatherViewModel
 import com.example.myweather.ui.theme.DarkBlueNight
+import com.example.myweather.ui.theme.DarkBlueNightContrast
 import com.example.myweather.ui.theme.OrangeSun
+import com.example.myweather.ui.theme.OrangeSunContrast
 import com.example.myweather.ui.theme.PurpleEvening
+import com.example.myweather.ui.theme.PurpleEveningContrast
 import com.example.myweather.ui.theme.YellowMorning
 import com.example.myweather.ui.theme.YellowMorningContrast
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
@@ -270,19 +273,18 @@ private fun getPrimaryBackgroundColor(weatherCode: Int, currentTime: Int): Color
 }
 
 private fun getSecondaryBackgroundColor(backgroundColor: Color): Color{
-
     return when(backgroundColor){
         YellowMorning -> {
             YellowMorningContrast
         }
         OrangeSun -> {
-            PurpleEvening
+            OrangeSunContrast
         }
         PurpleEvening -> {
-            YellowMorning
+            PurpleEveningContrast
         }
         DarkBlueNight -> {
-            YellowMorning
+            DarkBlueNightContrast
         }
         else -> {
             DarkBlueNight

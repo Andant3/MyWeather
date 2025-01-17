@@ -41,32 +41,30 @@ class WeatherRepositoryImpl(private val context: Context) : WeatherRepository {
 
         var userLocation = UserLocation(0.1, 0.1)
 
-        if (ContextCompat.checkSelfPermission(
+        if ((ContextCompat.checkSelfPermission(
                 context,
                 permission.ACCESS_FINE_LOCATION
             ) == PackageManager.PERMISSION_GRANTED
+                    ) || (ContextCompat.checkSelfPermission(
+                context,
+                permission.ACCESS_COARSE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED)
         ) {
-            if (ContextCompat.checkSelfPermission(
-                    context,
-                    permission.ACCESS_COARSE_LOCATION
-                ) == PackageManager.PERMISSION_GRANTED
-            ) {
-                suspendCoroutine<Location> { coroutine ->
-                    fusedLocationClient.lastLocation
-                        .addOnCompleteListener { locationTask ->
+            suspendCoroutine<Location> { coroutine ->
+                fusedLocationClient.lastLocation
+                    .addOnCompleteListener { locationTask ->
 
-                            userLocation = UserLocation(
-                                locationTask.result.latitude,
-                                locationTask.result.longitude
-                            )
+                        userLocation = UserLocation(
+                            locationTask.result.latitude,
+                            locationTask.result.longitude
+                        )
 
-                            Log.i("TAGY", "Location Loaded")
-                            coroutine.resume(locationTask.result)
-                        }
-                }
-
-
+                        Log.i("TAGY", "Location Loaded")
+                        coroutine.resume(locationTask.result)
+                    }
             }
+
+
         } else {
             userLocation = UserLocation(0.0, 0.0)
             Toast.makeText(
@@ -81,9 +79,9 @@ class WeatherRepositoryImpl(private val context: Context) : WeatherRepository {
 
     override suspend fun getCityByLocation(lat: Double, long: Double): String {
 
-        lateinit var cityName : String
+        lateinit var cityName: String
         val geoCoder = Geocoder(context, Locale.getDefault())
-        suspendCoroutine<MutableList<Address>> {coroutine ->
+        suspendCoroutine<MutableList<Address>> { coroutine ->
             geoCoder.getFromLocation(
                 lat, long, 1
             ) { address ->
