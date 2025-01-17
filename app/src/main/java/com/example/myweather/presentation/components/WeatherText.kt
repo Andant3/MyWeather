@@ -3,14 +3,17 @@ package com.example.myweather.presentation.components
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.sp
+import androidx.compose.ui.unit.TextUnit
 import com.example.myweather.domain.model.WeatherCode
 
 @Composable
 fun WeatherText(
     modifier: Modifier,
-    weatherCode: Int
+    weatherCode: Int,
+    textColor: Color,
+    fontSize: TextUnit
 ) {
     Text(
         modifier = modifier,
@@ -61,7 +64,8 @@ fun WeatherText(
                 "Undefined"
             }
         },
-        fontSize = 22.sp,
-        fontWeight = FontWeight.Bold
+        fontSize = fontSize,
+        fontWeight = FontWeight.Bold,
+        color = textColor
     )
 }

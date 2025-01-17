@@ -5,7 +5,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import com.example.myweather.R
-import java.util.Calendar
 
 @Composable
 fun WeatherImage(
@@ -13,7 +12,6 @@ fun WeatherImage(
     weatherCode: Int,
     time: Int
 ) {
-    val time = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
 
     Image(
         modifier = modifier,

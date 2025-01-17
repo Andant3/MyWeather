@@ -3,7 +3,6 @@ package com.example.myweather
 
 import android.Manifest
 import android.os.Bundle
-import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -47,11 +46,6 @@ class MainActivity : ComponentActivity() {
 
                 else -> {
                     // No location access granted.
-                    Toast.makeText(
-                        this,
-                        "GPS permission denied, change it in your Settings",
-                        Toast.LENGTH_SHORT
-                    ).show()
                 }
             }
         }

@@ -29,4 +29,5 @@ object WeatherCode {
     const val MODERATE_THUNDERSTORM = 95
     const val SLIGHT_HAIL_THUNDERSTORM = 96
     const val HEAVY_HAIL_THUNDERSTORM = 99
+    const val UNDEFINED_CODE = -1
 }
