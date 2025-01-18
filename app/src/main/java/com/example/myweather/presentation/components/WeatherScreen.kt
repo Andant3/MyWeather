@@ -57,7 +57,7 @@ fun WeatherScreen(viewModel: WeatherViewModel = hiltViewModel()) {
     val currentDay = Calendar.getInstance().get(Calendar.DAY_OF_WEEK)
     val backgroundColor = if (!weather.isLoading) {
         getPrimaryBackgroundColor(
-            weather.hourlyWeatherCodes[currentTime],
+            weather.hourlyWeather.weatherCodes[currentTime],
             currentTime
         )
     } else {
@@ -88,7 +88,7 @@ fun WeatherScreen(viewModel: WeatherViewModel = hiltViewModel()) {
                         .fillMaxWidth()
                         .size(220.dp)
                         .padding(top = 80.dp),
-                    weatherCode = weather.hourlyWeatherCodes[currentTime],
+                    weatherCode = weather.hourlyWeather.weatherCodes[currentTime],
                     time = currentTime
                 )
 
@@ -100,7 +100,7 @@ fun WeatherScreen(viewModel: WeatherViewModel = hiltViewModel()) {
                 ) {
                     Text(
                         modifier = Modifier.padding(start = 25.dp),
-                        text = "${weather.hourly2MTemperatureList[currentTime].toInt()}°",
+                        text = "${weather.hourlyWeather.temperature2M[currentTime].toInt()}°",
                         fontSize = 80.sp,
                         fontWeight = FontWeight.Bold,
                         color = textColor
@@ -110,14 +110,14 @@ fun WeatherScreen(viewModel: WeatherViewModel = hiltViewModel()) {
                     ) {
                         WeatherText(
                             modifier = Modifier.padding(top = 16.dp),
-                            weatherCode = weather.hourlyWeatherCodes[currentTime],
+                            weatherCode = weather.hourlyWeather.weatherCodes[currentTime],
                             textColor = textColor,
                             fontSize = 22.sp
                         )
                         Text(
                             modifier = Modifier.padding(top = 10.dp),
                             text = "Wind is "
-                                    + "${weather.hourlyMaxWindSpeedList[currentTime]}"
+                                    + "${weather.hourlyWeather.windSpeedMax[currentTime]}"
                                     + "km/h",
                             fontSize = 22.sp,
                             fontWeight = FontWeight.Bold,
@@ -138,10 +138,10 @@ fun WeatherScreen(viewModel: WeatherViewModel = hiltViewModel()) {
                         .padding(16.dp)
                         .height(124.dp),
                     hourlyWeather = HourlyWeather(
-                        time = weather.hourlyTime,
-                        temperature2M = weather.hourly2MTemperatureList,
-                        windSpeedMax = weather.hourlyMaxWindSpeedList,
-                        weatherCodes = weather.hourlyWeatherCodes
+                        time = weather.hourlyWeather.time,
+                        temperature2M = weather.hourlyWeather.temperature2M,
+                        windSpeedMax = weather.hourlyWeather.windSpeedMax,
+                        weatherCodes = weather.hourlyWeather.weatherCodes
                     ),
                     textColor = textColor,
                     backgroundColor = getSecondaryBackgroundColor(backgroundColor)
@@ -160,10 +160,10 @@ fun WeatherScreen(viewModel: WeatherViewModel = hiltViewModel()) {
                         .padding(16.dp)
                         .height(124.dp),
                     dailyWeather = DailyWeather(
-                        time = weather.dailyTime,
-                        temperatureMax = weather.dailyMaxTemperatureList,
-                        windSpeedMax = weather.dailyMaxWindSpeedList,
-                        weatherCodes = weather.dailyWeatherCodes
+                        time = weather.dailyWeather.time,
+                        temperatureMax = weather.dailyWeather.temperatureMax,
+                        windSpeedMax = weather.dailyWeather.windSpeedMax,
+                        weatherCodes = weather.dailyWeather.weatherCodes
                     ),
                     currentTime = currentTime,
                     textColor = textColor,

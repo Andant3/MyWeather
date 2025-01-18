@@ -1,6 +1,6 @@
 package com.example.myweather.data.retrofit
 
-import com.example.myweather.domain.model.WeatherResponse
+import com.example.myweather.domain.model.Weather
 import retrofit2.http.GET
 import retrofit2.http.Query
 
@@ -24,7 +24,7 @@ interface WeatherService {
         wind_speed_max: String = WIND_SPEED_PARAMETER_MAX,
         @Query("daily")
         weather_code_daily: String = WEATHER_CODE_PARAMETER
-    ): WeatherResponse
+    ): Weather
 
     companion object {
         const val WEATHER_CODE_PARAMETER = "weather_code"

@@ -47,14 +47,8 @@ class WeatherViewModel @Inject constructor(
                 _state.value = state.value.copy(
                     isLoading = false,
                     city = city,
-                    hourlyTime = hourlyWeather.time,
-                    hourly2MTemperatureList = hourlyWeather.temperature2M,
-                    hourlyMaxWindSpeedList = hourlyWeather.windSpeedMax,
-                    hourlyWeatherCodes = hourlyWeather.weatherCodes,
-                    dailyTime = dailyWeather.time,
-                    dailyMaxTemperatureList = dailyWeather.temperatureMax,
-                    dailyMaxWindSpeedList = dailyWeather.windSpeedMax,
-                    dailyWeatherCodes = dailyWeather.weatherCodes
+                    hourlyWeather = hourlyWeather,
+                    dailyWeather = dailyWeather
                 )
                 Log.i("TAGY", "Weather is successfully loaded")
             } catch (e: Exception) {

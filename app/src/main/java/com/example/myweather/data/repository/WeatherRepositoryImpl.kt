@@ -12,7 +12,7 @@ import androidx.core.content.ContextCompat
 import com.example.myweather.data.retrofit.RetrofitInstance
 import com.example.myweather.data.retrofit.WeatherService
 import com.example.myweather.domain.model.UserLocation
-import com.example.myweather.domain.model.WeatherResponse
+import com.example.myweather.domain.model.Weather
 import com.example.myweather.domain.repository.WeatherRepository
 import com.google.android.gms.location.LocationServices
 import java.util.Locale
@@ -22,7 +22,7 @@ import kotlin.coroutines.suspendCoroutine
 
 class WeatherRepositoryImpl(private val context: Context) : WeatherRepository {
 
-    override suspend fun getWeatherDataFromApi(lat: Double, long: Double): WeatherResponse {
+    override suspend fun getWeatherDataFromApi(lat: Double, long: Double): Weather {
         return RetrofitInstance.api.getWeatherFromApi(
             latitude = lat,
             longitude = long,
