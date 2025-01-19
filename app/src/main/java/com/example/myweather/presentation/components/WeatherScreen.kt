@@ -73,6 +73,7 @@ fun WeatherScreen(viewModel: WeatherViewModel = hiltViewModel()) {
     ) {
         if (!weather.isLoading) {
             PullToRefreshBox(
+                modifier = Modifier.fillMaxSize(),
                 isRefreshing = weather.isRefreshing,
                 onRefresh = {
                     viewModel.onEvent(WeatherEvent.Refresh)
@@ -89,10 +90,6 @@ fun WeatherScreen(viewModel: WeatherViewModel = hiltViewModel()) {
                         .verticalScroll(rememberScrollState()),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    Spacer(
-                        Modifier.height(40.dp)
-                    )
-
                     Text(
                         modifier = Modifier.padding(top = 60.dp),
                         text = weather.city,
