@@ -30,6 +30,7 @@ class WeatherRepositoryImpl(private val context: Context) : WeatherRepository {
             temperature_2m = WeatherService.TEMPERATURE_2M_PARAMETER,
             wind_speed = WeatherService.WIND_SPEED_PARAMETER,
             weather_code_hourly = WeatherService.WEATHER_CODE_PARAMETER,
+            temperature_2m_min = WeatherService.TEMPERATURE_2M_PARAMETER_MIN,
             temperature_2m_max = WeatherService.TEMPERATURE_2M_PARAMETER_MAX,
             wind_speed_max = WeatherService.WIND_SPEED_PARAMETER_MAX
         )

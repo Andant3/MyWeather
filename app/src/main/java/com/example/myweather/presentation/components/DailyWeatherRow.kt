@@ -53,8 +53,11 @@ fun DailyWeatherRow(
                         else (dayOfTheWeek + index) % 7
                     ).toString().substring(0, 3),
                     textColor = textColor,
-                    bottomText = dailyWeather.temperatureMax[index]
-                        .toInt().toString() + "°",
+                    bottomText =
+                    dailyWeather.temperatureMin[index]
+                        .toInt().toString() + "° — " +
+                            dailyWeather.temperatureMax[index]
+                                .toInt().toString() + "°",
                     currentTime = currentTime,
                     weatherCode = dailyWeather.weatherCodes[index],
                     backgroundColor = backgroundColor,

@@ -15,7 +15,10 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
+import androidx.compose.material3.pulltorefresh.PullToRefreshBox
+import androidx.compose.material3.pulltorefresh.PullToRefreshState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -39,7 +42,7 @@ import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
 
-@OptIn(ExperimentalPermissionsApi::class)
+@OptIn(ExperimentalPermissionsApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun WeatherScreen(viewModel: WeatherViewModel = hiltViewModel()) {
 
@@ -63,117 +66,139 @@ fun WeatherScreen(viewModel: WeatherViewModel = hiltViewModel()) {
         Color.White
     }
     val textColor = getTextColor(backgroundColor)
+    val pullToRefreshState = PullToRefreshState()
 
     if (fineLocationPermissionState.status.isGranted
-                || coarseLocationPermissionState.status.isGranted
+        || coarseLocationPermissionState.status.isGranted
     ) {
-        if(!weather.isLoading){
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .verticalScroll(rememberScrollState())
-                    .background(backgroundColor),
-                horizontalAlignment = Alignment.CenterHorizontally
+        if (!weather.isLoading) {
+            PullToRefreshBox(
+                isRefreshing = weather.isRefreshing,
+                onRefresh = {
+                    viewModel.onEvent(WeatherEvent.Refresh)
+                },
+                state = pullToRefreshState,
+                indicator = {
+
+                }
             ) {
-                Text(
-                    modifier = Modifier.padding(top = 60.dp),
-                    text = weather.city,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 32.sp,
-                    color = textColor
-                )
-                WeatherImage(
+                Column(
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .size(220.dp)
-                        .padding(top = 80.dp),
-                    //weatherCode = weather.hourlyWeather.weatherCodes[currentTime],
-                    weatherCode = weather.hourlyWeather
-                        .weatherCodes[currentTime + (weather.selectedDay * 24)],
-                    time = currentTime
-                )
-
-                Spacer(Modifier.height(80.dp))
-
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.Start
+                        .fillMaxSize()
+                        .background(backgroundColor)
+                        .verticalScroll(rememberScrollState()),
+                    horizontalAlignment = Alignment.CenterHorizontally
                 ) {
+                    Spacer(
+                        Modifier.height(40.dp)
+                    )
+
                     Text(
-                        modifier = Modifier.padding(start = 25.dp),
-                        text = "${weather.hourlyWeather
-                            .temperature2M[currentTime+(24*weather.selectedDay)].toInt()}°",
-                        fontSize = 80.sp,
+                        modifier = Modifier.padding(top = 60.dp),
+                        text = weather.city,
                         fontWeight = FontWeight.Bold,
+                        fontSize = 32.sp,
                         color = textColor
                     )
-                    Column(
-                        modifier = Modifier.padding(start = 40.dp)
+                    WeatherImage(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .size(220.dp)
+                            .padding(top = 80.dp),
+                        weatherCode = weather.hourlyWeather
+                            .weatherCodes[currentTime + (weather.selectedDay * 24)],
+                        time = currentTime
+                    )
+                    Spacer(Modifier.height(80.dp))
+
+
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.Start
                     ) {
-                        WeatherText(
-                            modifier = Modifier.padding(top = 16.dp),
-                            weatherCode = weather.hourlyWeather
-                                .weatherCodes[currentTime+(24*weather.selectedDay)],
-                            textColor = textColor,
-                            fontSize = 22.sp
-                        )
                         Text(
-                            modifier = Modifier.padding(top = 10.dp),
-                            text = "Wind is "
-                                    + "${weather.hourlyWeather
-                                        .windSpeedMax[currentTime+(24*weather.selectedDay)]}"
-                                    + " km/h",
-                            fontSize = 22.sp,
+                            modifier = Modifier.padding(start = 25.dp),
+                            text = "${
+                                weather.hourlyWeather
+                                    .temperature2M[currentTime + (24 * weather.selectedDay)].toInt()
+                            }°",
+                            fontSize = 80.sp,
                             fontWeight = FontWeight.Bold,
                             color = textColor
                         )
+                        Column(
+                            modifier = Modifier.padding(start = 40.dp)
+                        ) {
+                            WeatherText(
+                                modifier = Modifier.padding(top = 16.dp),
+                                weatherCode = weather.hourlyWeather
+                                    .weatherCodes[currentTime + (24 * weather.selectedDay)],
+                                textColor = textColor,
+                                fontSize = 22.sp
+                            )
+                            Text(
+                                modifier = Modifier.padding(top = 10.dp),
+                                text = "Wind is "
+                                        + "${
+                                    weather.hourlyWeather
+                                        .windSpeedMax[currentTime + (24 * weather.selectedDay)]
+                                }"
+                                        + " km/h",
+                                fontSize = 22.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = textColor
+                            )
+                        }
                     }
-                }
-                Text(
-                    modifier = Modifier.padding(top = 16.dp),
-                    text = "Hourly Weather",
-                    fontSize = 14.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = textColor
-                )
-                HourlyWeatherRow(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp)
-                        .height(124.dp),
-                    hourlyWeather = weather.hourlyWeather,
-                    textColor = textColor,
-                    backgroundColor = getSecondaryBackgroundColor(backgroundColor),
-                    day = weather.selectedDay
-                )
 
-                Text(
-                    modifier = Modifier.padding(top = 16.dp),
-                    text = "Daily Weather",
-                    fontSize = 14.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = textColor
-                )
-                DailyWeatherRow(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp)
-                        .height(146.dp),
-                    dailyWeather = weather.dailyWeather,
-                    currentTime = currentTime,
-                    textColor = textColor,
-                    backgroundColor = backgroundColor,
-                    secondaryBackgroundColor = getSecondaryBackgroundColor(backgroundColor),
-                    dayOfTheWeek = dayOfTheWeek,
-                    onClick = {
-                        selectedDay ->
-                        viewModel.onEvent(WeatherEvent.DayChanged(selectedDay))
-                    }
-                )
-                Spacer(Modifier.height(30.dp))
+                    Text(
+                        modifier = Modifier.padding(top = 16.dp),
+                        text = "Hourly Weather",
+                        fontSize = 14.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = textColor
+                    )
+
+                    HourlyWeatherRow(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(16.dp)
+                            .height(124.dp),
+                        hourlyWeather = weather.hourlyWeather,
+                        textColor = textColor,
+                        backgroundColor = getSecondaryBackgroundColor(backgroundColor),
+                        day = weather.selectedDay
+                    )
+
+
+                    Text(
+                        modifier = Modifier.padding(top = 16.dp),
+                        text = "Daily Weather",
+                        fontSize = 14.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = textColor
+                    )
+
+                    DailyWeatherRow(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(16.dp)
+                            .height(146.dp),
+                        dailyWeather = weather.dailyWeather,
+                        currentTime = currentTime,
+                        textColor = textColor,
+                        backgroundColor = backgroundColor,
+                        secondaryBackgroundColor = getSecondaryBackgroundColor(backgroundColor),
+                        dayOfTheWeek = dayOfTheWeek,
+                        onClick = { selectedDay ->
+                            viewModel.onEvent(WeatherEvent.DayChanged(selectedDay))
+                        }
+                    )
+
+                    Spacer(Modifier.height(30.dp))
+                }
             }
-        }
-        else{
+        } else {
             Column(
                 Modifier
                     .fillMaxSize()
@@ -272,20 +297,24 @@ private fun getPrimaryBackgroundColor(weatherCode: Int, currentTime: Int): Color
     }
 }
 
-private fun getSecondaryBackgroundColor(backgroundColor: Color): Color{
-    return when(backgroundColor){
+private fun getSecondaryBackgroundColor(backgroundColor: Color): Color {
+    return when (backgroundColor) {
         YellowMorning -> {
             YellowMorningContrast
         }
+
         OrangeSun -> {
             OrangeSunContrast
         }
+
         PurpleEvening -> {
             PurpleEveningContrast
         }
+
         DarkBlueNight -> {
             DarkBlueNightContrast
         }
+
         else -> {
             DarkBlueNight
         }

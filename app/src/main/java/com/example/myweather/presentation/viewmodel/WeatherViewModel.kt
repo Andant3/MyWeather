@@ -22,11 +22,24 @@ class WeatherViewModel @Inject constructor(
     val state: State<WeatherState> = _state
 
 
-    fun onEvent(event: WeatherEvent){
-        when(event){
-            is WeatherEvent.DayChanged->{
+    fun onEvent(event: WeatherEvent) {
+        when (event) {
+            is WeatherEvent.DayChanged -> {
                 _state.value = state.value.copy(
                     selectedDay = event.day
+                )
+            }
+
+            is WeatherEvent.Refresh -> {
+                _state.value = state.value.copy(
+                    isRefreshing = true,
+                    selectedDay = WeatherState.DEFAULT_DAY
+                )
+
+                getWeatherInfo()
+
+                _state.value = state.value.copy(
+                    isRefreshing = false
                 )
             }
         }

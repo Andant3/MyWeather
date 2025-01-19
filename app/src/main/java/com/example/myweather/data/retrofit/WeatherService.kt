@@ -19,6 +19,8 @@ interface WeatherService {
         @Query("hourly")
         weather_code_hourly: String = WEATHER_CODE_PARAMETER,
         @Query("daily")
+        temperature_2m_min: String = TEMPERATURE_2M_PARAMETER_MIN,
+        @Query("daily")
         temperature_2m_max: String = TEMPERATURE_2M_PARAMETER_MAX,
         @Query("daily")
         wind_speed_max: String = WIND_SPEED_PARAMETER_MAX,
@@ -31,6 +33,7 @@ interface WeatherService {
         const val WIND_SPEED_PARAMETER = "wind_speed_10m"
         const val TEMPERATURE_2M_PARAMETER = "temperature_2m"
         const val WIND_SPEED_PARAMETER_MAX = "wind_speed_10m_max"
+        const val TEMPERATURE_2M_PARAMETER_MIN = "temperature_2m_min"
         const val TEMPERATURE_2M_PARAMETER_MAX = "temperature_2m_max"
     }
 }
