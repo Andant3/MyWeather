@@ -55,7 +55,7 @@ fun DailyWeatherRow(
                     textColor = textColor,
                     bottomText =
                     dailyWeather.temperatureMin[index]
-                        .toInt().toString() + "° — " +
+                        .toInt().toString() + "° to " +
                             dailyWeather.temperatureMax[index]
                                 .toInt().toString() + "°",
                     currentTime = currentTime,
