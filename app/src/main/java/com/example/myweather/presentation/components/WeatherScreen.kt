@@ -53,7 +53,7 @@ fun WeatherScreen(viewModel: WeatherViewModel = hiltViewModel()) {
 
     val weather = viewModel.state.value
     val currentTime = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
-    val dayOfTheWeek = Calendar.getInstance().get(Calendar.DOW_LOCAL)
+    val dayOfTheWeek = Calendar.getInstance().get(Calendar.DAY_OF_WEEK) - 1
     val backgroundColor = if (!weather.isLoading) {
         getPrimaryBackgroundColor(
             weather.hourlyWeather.weatherCodes[currentTime],

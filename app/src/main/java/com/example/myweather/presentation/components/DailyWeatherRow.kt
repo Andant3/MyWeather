@@ -49,8 +49,8 @@ fun DailyWeatherRow(
                             bottom = 6.dp
                         ),
                     dayOfTheWeek = DayOfWeek.of(
-                        if ((dayOfTheWeek + index) != 7) (dayOfTheWeek + index) % 7
-                        else 7
+                        if ((dayOfTheWeek + index) % 7 == 0) 7
+                        else (dayOfTheWeek + index) % 7
                     ).toString().substring(0, 3),
                     textColor = textColor,
                     bottomText = dailyWeather.temperatureMax[index]
