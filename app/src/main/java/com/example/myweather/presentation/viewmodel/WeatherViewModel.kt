@@ -28,7 +28,6 @@ class WeatherViewModel @Inject constructor(
                 _state.value = state.value.copy(
                     selectedDay = event.day
                 )
-                Log.i("TAGY", "Event DayChanged ${event.day}")
             }
         }
     }

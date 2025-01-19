@@ -2,7 +2,6 @@ package com.example.myweather.presentation.components
 
 import android.Manifest
 import android.icu.util.Calendar
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -55,7 +54,6 @@ fun WeatherScreen(viewModel: WeatherViewModel = hiltViewModel()) {
     val weather = viewModel.state.value
     val currentTime = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
     val dayOfTheWeek = Calendar.getInstance().get(Calendar.DOW_LOCAL)
-    Log.i("TAGY", "Day of the week $dayOfTheWeek")
     val backgroundColor = if (!weather.isLoading) {
         getPrimaryBackgroundColor(
             weather.hourlyWeather.weatherCodes[currentTime],
@@ -168,7 +166,6 @@ fun WeatherScreen(viewModel: WeatherViewModel = hiltViewModel()) {
                     onClick = {
                         selectedDay ->
                         viewModel.onEvent(WeatherEvent.DayChanged(selectedDay))
-                        Log.i("TAGY", "Item clicked $selectedDay")
                     }
                 )
                 Spacer(Modifier.height(30.dp))
