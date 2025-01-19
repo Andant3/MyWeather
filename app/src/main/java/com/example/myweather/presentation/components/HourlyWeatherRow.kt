@@ -12,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.myweather.domain.model.HourlyWeather
@@ -21,6 +22,7 @@ import com.example.myweather.domain.model.HourlyWeather
 fun HourlyWeatherRow(
     modifier: Modifier,
     hourlyWeather: HourlyWeather,
+    day: Int,
     textColor: Color,
     backgroundColor: Color
 ) {
@@ -43,25 +45,29 @@ fun HourlyWeatherRow(
                 Column(
                     modifier = Modifier
                         .fillMaxHeight()
-                        .padding(bottom = 6.dp),
+                        .padding(
+                            top = 6.dp,
+                            bottom = 6.dp
+                        ),
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.SpaceBetween
                 ) {
                     Text(
                         text = "$index:00",
-                        fontSize = 10.sp,
+                        fontSize = 12.sp,
+                        fontWeight = FontWeight.Bold,
                         color = textColor
                     )
                     WeatherImage(
                         modifier = Modifier.padding(top = 6.dp),
-                        weatherCode = hourlyWeather.weatherCodes[index],
+                        weatherCode = hourlyWeather.weatherCodes[index + (24*day)],
                         time = index
                     )
                     Text(
-                        modifier = Modifier,
-                        text = hourlyWeather.temperature2M[index]
+                        text = hourlyWeather.temperature2M[index + (24*day)]
                             .toInt().toString() + "°",
-                        fontSize = 10.sp,
+                        fontSize = 12.sp,
+                        fontWeight = FontWeight.Bold,
                         color = textColor
                     )
                 }

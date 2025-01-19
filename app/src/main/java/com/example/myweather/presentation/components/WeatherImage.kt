@@ -19,7 +19,7 @@ fun WeatherImage(
         painter = painterResource(
             when (weatherCode) {
                 WeatherCode.CLEAR -> {
-                    if (time > 18 || time < 5) {
+                    if (time in 18..24 || time in 0..5) {
                         R.drawable.night_clear
                     } else {
                         R.drawable.day_clear
@@ -28,7 +28,7 @@ fun WeatherImage(
 
                 WeatherCode.MAINLY_CLEAR,
                 WeatherCode.PARTLY_CLOUDY-> {
-                    if (time > 18 || time < 5) {
+                    if (time in 18..24 || time in 0..5) {
                         R.drawable.night_pt_cloudy
                     } else {
                         R.drawable.day_pt_cloudy

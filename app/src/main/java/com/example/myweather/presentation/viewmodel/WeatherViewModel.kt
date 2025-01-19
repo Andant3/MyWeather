@@ -6,6 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.myweather.domain.usecases.WeatherUseCases
+import com.example.myweather.presentation.events.WeatherEvent
 import com.example.myweather.presentation.state.WeatherState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -20,6 +21,17 @@ class WeatherViewModel @Inject constructor(
     private val _state = mutableStateOf(WeatherState())
     val state: State<WeatherState> = _state
 
+
+    fun onEvent(event: WeatherEvent){
+        when(event){
+            is WeatherEvent.DayChanged->{
+                _state.value = state.value.copy(
+                    selectedDay = event.day
+                )
+                Log.i("TAGY", "Event DayChanged ${event.day}")
+            }
+        }
+    }
 
     fun getWeatherInfo() {
         viewModelScope.launch {

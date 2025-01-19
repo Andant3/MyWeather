@@ -2,6 +2,7 @@ package com.example.myweather.presentation.components
 
 import android.Manifest
 import android.icu.util.Calendar
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -24,9 +25,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.myweather.domain.model.DailyWeather
-import com.example.myweather.domain.model.HourlyWeather
 import com.example.myweather.domain.model.WeatherCode
+import com.example.myweather.presentation.events.WeatherEvent
 import com.example.myweather.presentation.viewmodel.WeatherViewModel
 import com.example.myweather.ui.theme.DarkBlueNight
 import com.example.myweather.ui.theme.DarkBlueNightContrast
@@ -54,7 +54,8 @@ fun WeatherScreen(viewModel: WeatherViewModel = hiltViewModel()) {
 
     val weather = viewModel.state.value
     val currentTime = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
-    val currentDay = Calendar.getInstance().get(Calendar.DAY_OF_WEEK)
+    val dayOfTheWeek = Calendar.getInstance().get(Calendar.DOW_LOCAL)
+    Log.i("TAGY", "Day of the week $dayOfTheWeek")
     val backgroundColor = if (!weather.isLoading) {
         getPrimaryBackgroundColor(
             weather.hourlyWeather.weatherCodes[currentTime],
@@ -88,7 +89,9 @@ fun WeatherScreen(viewModel: WeatherViewModel = hiltViewModel()) {
                         .fillMaxWidth()
                         .size(220.dp)
                         .padding(top = 80.dp),
-                    weatherCode = weather.hourlyWeather.weatherCodes[currentTime],
+                    //weatherCode = weather.hourlyWeather.weatherCodes[currentTime],
+                    weatherCode = weather.hourlyWeather
+                        .weatherCodes[currentTime + (weather.selectedDay * 24)],
                     time = currentTime
                 )
 
@@ -100,7 +103,8 @@ fun WeatherScreen(viewModel: WeatherViewModel = hiltViewModel()) {
                 ) {
                     Text(
                         modifier = Modifier.padding(start = 25.dp),
-                        text = "${weather.hourlyWeather.temperature2M[currentTime].toInt()}°",
+                        text = "${weather.hourlyWeather
+                            .temperature2M[currentTime+(24*weather.selectedDay)].toInt()}°",
                         fontSize = 80.sp,
                         fontWeight = FontWeight.Bold,
                         color = textColor
@@ -118,7 +122,7 @@ fun WeatherScreen(viewModel: WeatherViewModel = hiltViewModel()) {
                             modifier = Modifier.padding(top = 10.dp),
                             text = "Wind is "
                                     + "${weather.hourlyWeather.windSpeedMax[currentTime]}"
-                                    + "km/h",
+                                    + " km/h",
                             fontSize = 22.sp,
                             fontWeight = FontWeight.Bold,
                             color = textColor
@@ -137,14 +141,10 @@ fun WeatherScreen(viewModel: WeatherViewModel = hiltViewModel()) {
                         .fillMaxWidth()
                         .padding(16.dp)
                         .height(124.dp),
-                    hourlyWeather = HourlyWeather(
-                        time = weather.hourlyWeather.time,
-                        temperature2M = weather.hourlyWeather.temperature2M,
-                        windSpeedMax = weather.hourlyWeather.windSpeedMax,
-                        weatherCodes = weather.hourlyWeather.weatherCodes
-                    ),
+                    hourlyWeather = weather.hourlyWeather,
                     textColor = textColor,
-                    backgroundColor = getSecondaryBackgroundColor(backgroundColor)
+                    backgroundColor = getSecondaryBackgroundColor(backgroundColor),
+                    day = weather.selectedDay
                 )
 
                 Text(
@@ -158,17 +158,18 @@ fun WeatherScreen(viewModel: WeatherViewModel = hiltViewModel()) {
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(16.dp)
-                        .height(124.dp),
-                    dailyWeather = DailyWeather(
-                        time = weather.dailyWeather.time,
-                        temperatureMax = weather.dailyWeather.temperatureMax,
-                        windSpeedMax = weather.dailyWeather.windSpeedMax,
-                        weatherCodes = weather.dailyWeather.weatherCodes
-                    ),
+                        .height(146.dp),
+                    dailyWeather = weather.dailyWeather,
                     currentTime = currentTime,
                     textColor = textColor,
-                    backgroundColor = getSecondaryBackgroundColor(backgroundColor),
-                    currentDay = currentDay
+                    backgroundColor = backgroundColor,
+                    secondaryBackgroundColor = getSecondaryBackgroundColor(backgroundColor),
+                    dayOfTheWeek = dayOfTheWeek,
+                    onClick = {
+                        selectedDay ->
+                        viewModel.onEvent(WeatherEvent.DayChanged(selectedDay))
+                        Log.i("TAGY", "Item clicked $selectedDay")
+                    }
                 )
                 Spacer(Modifier.height(30.dp))
             }
