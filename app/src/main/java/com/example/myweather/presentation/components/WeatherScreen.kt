@@ -112,14 +112,16 @@ fun WeatherScreen(viewModel: WeatherViewModel = hiltViewModel()) {
                     ) {
                         WeatherText(
                             modifier = Modifier.padding(top = 16.dp),
-                            weatherCode = weather.hourlyWeather.weatherCodes[currentTime],
+                            weatherCode = weather.hourlyWeather
+                                .weatherCodes[currentTime+(24*weather.selectedDay)],
                             textColor = textColor,
                             fontSize = 22.sp
                         )
                         Text(
                             modifier = Modifier.padding(top = 10.dp),
                             text = "Wind is "
-                                    + "${weather.hourlyWeather.windSpeedMax[currentTime]}"
+                                    + "${weather.hourlyWeather
+                                        .windSpeedMax[currentTime+(24*weather.selectedDay)]}"
                                     + " km/h",
                             fontSize = 22.sp,
                             fontWeight = FontWeight.Bold,
